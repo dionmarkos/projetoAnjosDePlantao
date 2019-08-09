@@ -1,0 +1,71 @@
+{% extends 'blog/base.html' %}
+{% block title %}Realizar Doação{% endblock %}
+{% block formularios %}
+		<form method="POST">
+			{% csrf_token %}
+
+			{% if messages %}
+			<div class="form-group">
+				<ul class="messages p-0" role="alert">
+				    {% for message in messages %}
+				     <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+						{% if formDoacaoSaida.errors %}
+							<li class="alert alert-warning p-0 m-0">{{ formDoacaoSaida.errors }}</li>
+						{% endif %}
+				    {% endfor %}
+				</ul>
+		  </div>
+			{% endif %}
+
+			<div class="form-group p-0">
+				<div class="form-group row justify-content-between m-0">
+					<a href="../../../doacao_saida/" class="btn btn-primary col-3">Nova Doação</a>
+				</div>
+		  </div>
+
+			<div class="input-group mb-3">
+  			<div class="input-group-prepend">
+    			<label class="input-group-text" for="inputGroupSelect01">Selecione o Favorecido</label>
+  			</div>
+	  		{{ formDoacaoSaida.pessoa }}
+			</div>
+
+			<div class="form-group pt-3">
+		    <label for="valor">Valor Doado R$</label>
+				<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os centavos)</small>
+				<div id="valor">
+					{{ formDoacaoSaida.valor }}
+				</div>
+		  </div>
+
+			<div class="form-row">
+				<div class="">
+					<label for="outrasDoacoes">Outras Doações</label>
+					<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os decimais)</small>
+				</div>
+				<div class="input-group mb-3">
+	  			<div class="input-group-prepend">
+	    			<label class="input-group-text" for="inputGroupSelect01">Produto</label>
+	  			</div>
+					{{ formDoacaoSaida.quantiaDoacao }}
+		  		{{ formDoacaoSaida.produtoDoacao }}
+				</div>
+		  </div>
+
+			<div class="form-group">
+		    <label for="observacoes">Observações</label>
+				<div id="observacoes">
+					{{ formDoacaoSaida.observacoes }}
+				</div>
+		  </div>
+			<div class="form-group row justify-content-between m-0">
+				<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+				<button type="submit" class="btn btn-primary col-3">Salvar</button>
+			</div>
+			{%for doacao in doacoes%}
+				{{doacao.pessoa.nome}} ||
+				{{doacao.valor}} ||
+				{{doacao.produtoDoacao}} <br>
+			{%endfor%}
+		</form>
+{% endblock %}

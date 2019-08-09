@@ -1,0 +1,85 @@
+{% extends 'blog/base.html' %}
+{% block title %}Receber Doação{% endblock %}
+{% block formularios %}
+		<form method="POST">
+			{% csrf_token %}
+
+			{% if messages %}
+			<div class="form-group">
+				<ul class="messages p-0" role="alert">
+				    {% for message in messages %}
+				     <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+						{% if formDoacaoEntrada.errors %}
+							<li class="alert alert-warning p-0 m-0">{{ formDoacaoEntrada.errors }}</li>
+						{% endif %}
+				    {% endfor %}
+				</ul>
+		  </div>
+			{% endif %}
+
+			<div class="form-group p-0">
+				<div class="form-group row justify-content-between m-0">
+					<a href="../../../doacao_entrada/" class="btn btn-primary col-3">Nova Doação</a>
+				</div>
+		  </div>
+
+			<div class="input-group mb-3">
+  			<div class="input-group-prepend">
+    			<label class="input-group-text" for="inputGroupSelect01">Selecione o Doador</label>
+  			</div>
+	  		{{ formDoacaoEntrada.pessoa }}
+			</div>
+
+			<div class="form-group pt-3">
+		    <label for="valor">Valor Doado R$</label>
+				<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os centavos)</small>
+				<div id="valor">
+					{{ formDoacaoEntrada.valor }}
+				</div>
+		  </div>
+
+			<div class="form-row">
+				<div class="">
+					<label for="outrasDoacoes">Outras Doações</label>
+					<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os decimais)</small>
+				</div>
+				<div id="outrasDoacoes" class="input-group mb-3">
+	  			<div class="input-group-prepend">
+	    			<label class="input-group-text" for="inputGroupSelect01">Produto</label>
+	  			</div>
+					{{ formDoacaoEntrada.quantiaDoacao }}
+		  		{{ formDoacaoEntrada.produtoDoacao }}
+				</div>
+		  </div>
+
+			<div class="form-row pb-2">
+				<div class="col text-left">
+					Data da ultima alteração:
+					{% if not doacao %}
+					<small class="text-info">A DATA APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+					{% else %}
+					<strong>{{ doacao.dataDoacao }}</strong>
+					{% endif %}
+				</div>
+				<div class="col text-right">
+					Usuário da ultima alteração:
+					{% if not doacao %}
+					<small class="text-info">O USUÁRIO APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+					{% else %}
+					<strong>{{ doacao.autor }}</strong>
+					{% endif %}
+				</div>
+			</div>
+
+			<div class="form-group">
+		    <label for="observacoes">Observações</label>
+				<div id="observacoes">
+					{{ formDoacaoEntrada.observacoes }}
+				</div>
+		  </div>
+			<div class="form-group row justify-content-between m-0">
+				<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+				<button type="submit" class="btn btn-primary col-3">Salvar</button>
+			</div>
+		</form>
+{% endblock %}

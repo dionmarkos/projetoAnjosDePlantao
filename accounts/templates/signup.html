@@ -1,0 +1,31 @@
+<!-- templates/signup.html -->
+{% extends 'blog/base.html' %}
+
+{% block title %}Cadastrar Usuário{% endblock %}
+
+{% block formularios %}
+
+<h2>Cadastrar Usuários</h2>
+{% if messages %}
+<div class="form-group">
+  <ul class="messages p-0" role="alert">
+      {% for message in messages %}
+       <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+      {% if form.errors %}
+        <li class="alert alert-warning p-0 m-0">{{ form.errors }}</li>
+      {% endif %}
+      {% endfor %}
+  </ul>
+</div>
+{% endif %}
+  <form method="post">
+    <div class="form-group">
+    {% csrf_token %}
+    {{ form.as_p }}
+    </div>
+    <div class="form-group row justify-content-between m-0">
+  		<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+  		<button type="submit" class="btn btn-primary col-3">Cadastrar</button>
+  	</div>
+  </form>
+{% endblock %}

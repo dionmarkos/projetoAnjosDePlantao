@@ -1,0 +1,108 @@
+{% extends 'blog/base.html' %}
+{% block title %}Caixa Geral{% endblock %}
+{% block formularios %}
+<form method="POST" class="post-form">
+	{% csrf_token %}
+
+	{% if messages %}
+	<div class="form-group">
+		<ul class="messages p-0" role="alert">
+		    {% for message in messages %}
+		     <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+				{% if formCaixaGeral.errors %}
+					<li class="alert alert-warning p-0 m-0">{{ formCaixaGeral.errors }}</li>
+				{% endif %}
+		    {% endfor %}
+		</ul>
+  </div>
+	{% endif %}
+
+	<div class="form-group col">
+		<label for="observacoes">Obersavações</label>
+		<div id="observacoes">
+			{{ formCaixaGeral.observacoes }}
+		</div>
+	</div>
+
+	<div class="form-row pb-2">
+		<div class="col text-left">
+			Data da ultima alteração:
+			{% if not operacao %}
+			<small class="text-info">A DATA APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			{{ operacao.dataDeCadastro }}
+			{% endif %}
+		</div>
+		<div class="col text-right">
+			Usuário da ultima alteração:
+			{% if not operacao %}
+			<small class="text-info">O USUÁRIO APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			<strong>{{ operacao.autor }}</strong>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="form-group row justify-content-between m-0">
+		<button type="submit" class="btn btn-primary col-3">Salvar</button>
+	</div>
+</form>
+
+	<div class="row mt-3">
+		<div class="col-lg">
+			<table class="table">
+				<thead class="thead-dark">
+					<legend class="text-center">Últimas Transações</legend>
+					<tr class="text-center">
+						<th class="align-middle" scope="col">Nº</th>
+						<th class="align-middle" scope="col">Data</th>
+						<th class="align-middle" scope="col">Nome</th>
+						<th class="align-middle" scope="col">CPF | CNPJ</th>
+						<th class="align-middle" scope="col">Tipo de Doação</th>
+						<th class="align-middle" scope="col">Recursos</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ultimaDoacao in ultimasDoacoes %}
+					<tr class="text-center">
+						<td class="align-middle">{{forloop.counter}}</td>
+						<td class="align-middle">{{ultimaDoacao.dataDoacao}}</td>
+						<td class="align-middle">{{ultimaDoacao.pessoa.nome}}</td>
+						<td class="align-middle">{{ultimaDoacao.pessoa.cpfCnpj}}</td>
+						<td class="align-middle">{{ultimaDoacao.tipoDoacao}}</td>
+						<td class="align-middle">R$ {{ultimaDoacao.valor}}<br>{{ultimaDoacao.observacoes}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-auto text-center">
+			<legend>Recursos</legend>
+			<div class="bg-success p-3">
+				<h2>SALDO</h2>
+				<h1>R$ {{ operacao.saldo }}</h1>
+			</div>
+
+			<table class="table mt-3">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Item</th>
+						<th scope="col">Quantidade</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Dinheiro</td>
+						<td>R$349,78</td>
+					</tr>
+					<tr>
+						<td>Cesta Básica</td>
+						<td>3</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+{% endblock %}

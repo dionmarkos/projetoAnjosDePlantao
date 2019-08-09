@@ -1,0 +1,108 @@
+{% extends 'blog/base.html' %}
+{% block title %}Cadastrar Pessoa{% endblock %}
+{% block formularios %}
+<form method="POST">
+	{% csrf_token %}
+
+	{% if messages %}
+	<div class="form-group">
+		<ul class="messages p-0" role="alert">
+		    {% for message in messages %}
+		     <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+				 {% if formCadastroPessoa.erros %}
+				 <li class="alert alert-warning p-0 m-0">{{ formCadastroPessoa.non_field_errors }}</li>
+				 {% endif %}
+		    {% endfor %}
+		</ul>
+  </div>
+	{% endif %}
+
+	<div class="form-group p-0">
+		<div class="form-group row justify-content-between m-0">
+			<a href="../../../cadastrar_pessoa/" class="btn btn-primary col-3">Novo Cadastro</a>
+		</div>
+  </div>
+
+	<div class="form-row">
+		<div class="form-group col">
+			<label for="nome">Nome</label>
+			<div id="nome">
+				{{ formCadastroPessoa.nome }}
+			</div>
+		</div>
+		<div class="form-group col-md-auto">
+      <label for="cpj_cnpj">CPF | CNPJ</label>
+      <div id="cpj_cnpj">
+				{{ formCadastroPessoa.cpfCnpj }}
+    	</div>
+		</div>
+		<div class="col-md-auto">
+	    <label for="telefone">Telefone</label>
+			<div id="telefone">
+				{{ formCadastroPessoa.telefone }}
+			</div>
+	  </div>
+  </div>
+
+	<div class="form-row">
+		<div class="form-group col-8">
+			<label for="endereco">Endereço</label>
+			<div id="endereco">
+				{{ formCadastroPessoa.endereco }}
+			</div>
+		</div>
+			<div class="form-group col">
+				<label for="bairro">Bairro</label>
+				<div id="bairro">
+					{{ formCadastroPessoa.bairro }}
+				</div>
+			</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-auto">
+			<label for="cidade">Cidade</label>
+			<div id="cidade">
+				{{ formCadastroPessoa.cidade }}
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<label for="estado">Estado</label>
+			<div id="estado">
+				{{ formCadastroPessoa.estado }}
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group pt-3">
+    <label for="observacoes">Observações</label>
+		<div id="observacoes">
+			{{ formCadastroPessoa.observacoes }}
+		</div>
+  </div>
+
+	<div class="form-row pb-2">
+		<div class="col text-left">
+			Data da ultima alteração:
+			{% if not pessoa %}
+			<small class="text-info">A DATA APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			<strong>{{ pessoa.dataDeCadastro }}</strong>
+			{% endif %}
+		</div>
+		<div class="col text-right">
+			Usuário da ultima alteração:
+			{% if not pessoa %}
+			<small class="text-info">O USUÁRIO APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			<strong>{{ pessoa.autor }}</strong>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="form-group row justify-content-between m-0">
+		<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+		<button type="submit" class="btn btn-primary col-3">Salvar</button>
+	</div>
+</form>
+{% endblock %}

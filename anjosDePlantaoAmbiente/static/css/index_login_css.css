@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+html,body{
+background-image: url("../imagens/fundo_login.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+background-position: center;
+height: 100%;
+font-family: 'Raleway', sans-serif;
+}
+
+li {
+	list-style-type: none;
+}
+
+.messages, ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+#img_card_header {
+  max-width: 60px;
+  max-height: 60px;
+}
+
+label[for=username], [for=password] {
+  color: black;
+  font-size: 18px;
+}
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.card{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: rgba(248, 249, 250, 0.8) !important;
+}
+
+.input-group-prepend span{
+width: 100%;
+background-color: white;
+color: black;
+border:0 !important;
+z-index: 1;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+}
+
+.input-group input[type=text], [type=password] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  text-indent: 2px;
+}
+
+.login_btn {
+  width: 100px;
+  margin-left: 2%;
+}

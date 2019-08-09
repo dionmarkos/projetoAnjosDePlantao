@@ -1,0 +1,281 @@
+{% extends 'blog/base.html' %}
+{% block title %}Pesquisas{% endblock %}
+{% block formularios %}
+<form method="GET" action="{% url 'busca' %}">
+	{% csrf_token %}
+
+	{% if messages %}
+	<div class="form-group">
+		<ul class="messages p-0" role="alert">
+				{% for message in messages %}
+				 <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+				{% if formBusca.errors %}
+					<li class="alert alert-warning p-0 m-0">{{ formBusca.errors }}</li>
+				{% endif %}
+				{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+
+  <label for="busca">Pesquisa</label>
+  <div class="form-row">
+    <div class="form-group col">
+      <div id="busca">
+        {{ formBusca.texto_busca }}
+      </div>
+    </div>
+    <div class="input-group col mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Selecione o tipo de consulta</label>
+      </div>
+      {{ formBusca.tipo_busca }}
+    </div>
+	</div>
+
+	<div class="form-group row justify-content-between m-0">
+		<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+		<button type="submit" class="btn btn-primary col-3">Buscar</button>
+	</div>
+</form>
+
+<!-- CONSULTA DE PESSOAS -->
+{% if classeRetorno == 'Pessoa' %}
+	<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+		<div class="col-lg">
+			<table class="table table-striped table-hover bg-silver">
+				<thead class="thead-dark">
+					<legend class="text-center">Pessoas Cadastradas</legend>
+					<tr class="text-center">
+						<th class="align-middle" scope="col">Nº</th>
+						<th class="align-middle" scope="col">CPF | CNPJ</th>
+						<th class="align-middle" scope="col">Nome</th>
+						<th class="align-middle" scope="col">Telefone</th>
+						<th class="align-middle" scope="col">Endereço</th>
+						<th class="align-middle" scope="col">Data de Cadastro</th>
+						<th class="align-middle" scope="col">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for resultado in resultados %}
+						<tr class="text-center">
+							<td class="align-middle">{{forloop.counter}}</td>
+							<td class="align-middle">{{resultado.cpfCnpj}}</td>
+							<td class="align-middle">{{resultado.nome}}</td>
+							<td class="align-middle">{{resultado.telefone}}</td>
+							<td class="align-middle">{{resultado.endereco}} {{resultado.bairro}} {{resultado.cidade}} {{resultado.estado}}</td>
+							<td class="align-middle">{{resultado.dataDeCadastro}}</td>
+							<td class="align-middle">
+								<form method="GET" class="get-form" action={% url 'cadastrar_pessoa_detail' pk=resultado.pk %}>
+									<div class="form-group row justify-content-between m-0">
+										<button type="submit" class="btn btn-white col">Editar</button>
+									</div>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% endif %}
+
+	<!-- CONSULTA DE EVENTOS -->
+	{% if classeRetorno == 'Evento' %}
+		<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+			<div class="col-lg">
+				<table class="table table-striped table-hover bg-silver">
+					<thead class="thead-dark">
+						<legend class="text-center">Eventos Cadastrados</legend>
+						<tr class="text-center">
+							<th class="align-middle" scope="col">Nº</th>
+							<th class="align-middle" scope="col">Nome</th>
+							<th class="align-middle" scope="col">Local</th>
+							<th class="align-middle" scope="col">Data do Evento</th>
+							<th class="align-middle" scope="col">Endereço</th>
+							<th class="align-middle" scope="col">Data de Cadastro</th>
+							<th class="align-middle" scope="col">Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for resultado in resultados %}
+							<tr class="text-center">
+								<td class="align-middle">{{forloop.counter}}</td>
+								<td class="align-middle">{{resultado.nome}}</td>
+								<td class="align-middle">{{resultado.local}}</td>
+								<td class="align-middle">{{resultado.data}}</td>
+								<td class="align-middle">{{resultado.endereco}} {{resultado.bairro}} {{resultado.cidade}} {{resultado.estado}}</td>
+								<td class="align-middle">{{resultado.dataDeCadastro}}</td>
+								<td class="align-middle">
+									<form method="GET" class="get-form" action={% url 'cadastrar_evento_detail' pk=resultado.pk %}>
+										<div class="form-group row justify-content-between m-0">
+											<button type="submit" class="btn btn-white col">Editar</button>
+										</div>
+									</form>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{% endif %}
+
+		<!-- CONSULTA DE PRODUTOS -->
+		{% if classeRetorno == 'Produto' %}
+			<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+				<div class="col-lg">
+					<table class="table table-striped table-hover bg-silver">
+						<thead class="thead-dark">
+							<legend class="text-center">Produtos Cadastrados</legend>
+							<tr class="text-center">
+								<th class="align-middle" scope="col">Nº</th>
+								<th class="align-middle" scope="col">Descrição</th>
+								<th class="align-middle" scope="col">Saldo de Estoque</th>
+								<th class="align-middle" scope="col">Data do Cadastro</th>
+								<th class="align-middle" scope="col">Ação</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for resultado in resultados %}
+								<tr class="text-center">
+									<td class="align-middle">{{forloop.counter}}</td>
+									<td class="align-middle">{{resultado.descricao}}</td>
+									<td class="align-middle">{{resultado.saldoEstoque}}</td>
+									<td class="align-middle">{{resultado.dataDeCadastro}}</td>
+									<td class="align-middle">
+										<form method="GET" class="get-form" action={% url 'cadastrar_produto_detail' pk=resultado.pk %}>
+											<div class="form-group row justify-content-between m-0">
+												<button type="submit" class="btn btn-white col">Editar</button>
+											</div>
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			{% endif %}
+
+			<!-- CONSULTA DE USUÁRIOS -->
+			{% if classeRetorno == 'Usuario' %}
+				<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+					<div class="col-lg">
+						<table class="table table-striped table-hover bg-silver">
+							<thead class="thead-dark">
+								<legend class="text-center">Usuários Cadastrados</legend>
+								<tr class="text-center">
+									<th class="align-middle" scope="col">Nº</th>
+									<th class="align-middle" scope="col">Nome de Usuário</th>
+									<th class="align-middle" scope="col">Data de Cadastro</th>
+									<th class="align-middle" scope="col">Último Acesso</th>
+									{% if request.user.is_superuser %}
+									<th class="align-middle" scope="col">Ação</th>
+									{% endif %}
+								</tr>
+							</thead>
+							<tbody>
+								{% for resultado in resultados %}
+									<tr class="text-center">
+										<td class="align-middle">{{forloop.counter}}</td>
+										<td class="align-middle">{{resultado.username}}</td>
+										<td class="align-middle">{{resultado.date_joined}}</td>
+										<td class="align-middle">{{resultado.last_login}}</td>
+										{% if request.user.is_superuser %}
+										<td class="align-middle">
+											<form method="GET" class="get-form" action={% url 'password_reset' %}>
+												<div class="form-group row justify-content-between m-0">
+													<button type="submit" class="btn btn-white col">Editar</button>
+												</div>
+											</form>
+										</td>
+										{% endif %}
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				{% endif %}
+
+				<!-- CONSULTA DE ENTRADA DE DOAÇÕES -->
+				{% if classeRetorno == 'DoacaoEntrada' %}
+					<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+						<div class="col-lg">
+							<table class="table table-striped table-hover bg-silver">
+								<thead class="thead-dark">
+									<legend class="text-center">Doações Recebidas</legend>
+									<tr class="text-center">
+										<th class="align-middle" scope="col">Nº</th>
+										<th class="align-middle" scope="col">Pessoa</th>
+										<th class="align-middle" scope="col">CPF | CNPJ</th>
+										<th class="align-middle" scope="col">Valor</th>
+										<th class="align-middle" scope="col">Produtos</th>
+										<th class="align-middle" scope="col">Data de Doação</th>
+										<th class="align-middle" scope="col">Ação</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for resultado in resultados %}
+										<tr class="text-center">
+											<td class="align-middle">{{forloop.counter}}</td>
+											<td class="align-middle">{{resultado.pessoa.nome}}</td>
+											<td class="align-middle">{{resultado.pessoa.cpfCnpj}}</td>
+											<td class="align-middle">R$ {{resultado.valor}}</td>
+											<td class="align-middle">{{resultado.quantiaDoacao}} {{resultado.produtoDoacao.descricao}}</td>
+											<td class="align-middle">{{resultado.dataDoacao}}</td>
+											<td class="align-middle">
+												<form method="GET" class="get-form" action={% url 'doacao_entrada_detail' pk=resultado.pk %}>
+													<div class="form-group row justify-content-between m-0">
+														<button type="submit" class="btn btn-white col">Editar</button>
+													</div>
+												</form>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{% endif %}
+					<!-- CONSULTA DE SAÍDA DE DOAÇÕES -->
+					{% if classeRetorno == 'DoacaoSaida' %}
+						<div class="row table-wrapper-scroll-y my-custom-scrollbar mt-5">
+							<div class="col-lg">
+								<table class="table table-striped table-hover bg-silver">
+									<thead class="thead-dark">
+										<legend class="text-center">Doações Realizadas</legend>
+										<tr class="text-center">
+											<th class="align-middle" scope="col">Nº</th>
+											<th class="align-middle" scope="col">Pessoa</th>
+											<th class="align-middle" scope="col">CPF | CNPJ</th>
+											<th class="align-middle" scope="col">Valor</th>
+											<th class="align-middle" scope="col">Produtos</th>
+											<th class="align-middle" scope="col">Data de Doação</th>
+											<th class="align-middle" scope="col">Ação</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for resultado in resultados %}
+											<tr class="text-center">
+												<td class="align-middle">{{forloop.counter}}</td>
+												<td class="align-middle">{{resultado.pessoa.nome}}</td>
+												<td class="align-middle">{{resultado.pessoa.cpfCnpj}}</td>
+												<td class="align-middle">R$ {{resultado.valor}}</td>
+												<td class="align-middle">{{resultado.quantiaDoacao}} {{resultado.produtoDoacao.descricao}}</td>
+												<td class="align-middle">{{resultado.dataDoacao}}</td>
+												<td class="align-middle">
+													<form method="GET" class="get-form" action={% url 'doacao_saida_detail' pk=resultado.pk %}>
+														<div class="form-group row justify-content-between m-0">
+															<button type="submit" class="btn btn-white col">Editar</button>
+														</div>
+													</form>
+												</td>
+											</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+						{% endif %}
+{% endblock %}

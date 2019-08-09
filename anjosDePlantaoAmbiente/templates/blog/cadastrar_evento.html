@@ -1,0 +1,111 @@
+{% extends 'blog/base.html' %}
+{% block title %}Cadastrar Evento{% endblock %}
+{% block formularios %}
+<form method="POST">
+	{% csrf_token %}
+
+	{% if messages %}
+	<div class="form-group">
+		<ul class="messages p-0" role="alert">
+				{% for message in messages %}
+				 <li{% if message.tags %} class="{{ message.tags }} p-0 m-0" {% endif %}>{{ message }}</li>
+				{% if formEvento.errors %}
+					<li class="alert alert-warning p-0 m-0">{{ formEvento.errors }}</li>
+				{% endif %}
+				{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+
+	<div class="form-group p-0">
+		<div class="form-group row justify-content-between m-0">
+			<a href="../../../cadastrar_evento/" class="btn btn-primary col-3">Novo Cadastro</a>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col">
+			<label for="nome">Nome</label>
+			<div id="nome">
+				{{ formEvento.nome }}
+			</div>
+		</div>
+		<div class="form-group col">
+			<label for="local">Local</label>
+			<div id="local">
+				{{ formEvento.local }}
+			</div>
+		</div>
+		<div class="form-group col-md-auto">
+			<label for="datetimepicker1">Data de Realização</label>
+			<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+				<div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+					<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+				</div>
+				{{ formEvento.data }}
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="form-group col-8">
+			<label for="endereco">Endereço</label>
+			<div id="endereco">
+				{{ formEvento.endereco }}
+			</div>
+		</div>
+		<div class="form-group col">
+			<label for="bairro">Bairro</label>
+			<div id="bairro">
+				{{ formEvento.bairro }}
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+		<div class="col-md-auto">
+			<label for="cidade">Cidade</label>
+			<div id="cidade">
+				{{ formEvento.cidade }}
+			</div>
+		</div>
+		<div class="col-md-auto">
+			<label for="estado">Estado</label>
+			<div id="estado">
+				{{ formEvento.estado }}
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group pt-3">
+		<label for="observacoes">Observações</label>
+		<div id="observacoes">
+			{{ formEvento.observacoes }}
+		</div>
+	</div>
+
+	<div class="form-row pb-2">
+		<div class="col text-left">
+			Data da ultima alteração:
+			{% if not evento %}
+			<small class="text-info">A DATA APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			<strong>{{ evento.dataDeCadastro }}</strong>
+			{% endif %}
+		</div>
+		<div class="col text-right">
+			Usuário da ultima alteração:
+			{% if not evento %}
+			<small class="text-info">O USUÁRIO APARECERÁ APÓS A CONCLUSÃO DA OPERAÇÃO</small>
+			{% else %}
+			<strong>{{ evento.autor }}</strong>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="form-group row justify-content-between m-0">
+		<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
+		<button type="submit" class="btn btn-primary col-3">Salvar</button>
+	</div>
+</form>
+{% endblock %}
