@@ -2,6 +2,7 @@ from django import forms
 from .models import *
 from django.db import models
 from django.utils import timezone
+from django.forms import modelformset_factory
 
 class CadastrarPessoaForm(forms.ModelForm):
 
@@ -27,7 +28,7 @@ class CadastrarProdutoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CadastrarProdutoForm, self).__init__(*args, **kwargs)
-        self.fields['descricao'].widget.attrs.update({'class' : 'col-6 form-control', 'placeholder' : 'Descrição do produto'})
+        self.fields['descricao'].widget.attrs.update({'class' : 'col-md-6 form-control', 'placeholder' : 'Descrição do produto'})
 
 class CaixaGeralForm(forms.ModelForm):
 
@@ -37,44 +38,47 @@ class CaixaGeralForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CaixaGeralForm, self).__init__(*args, **kwargs)
-        self.fields['observacoes'].widget.attrs.update({'class' : 'col-sm-8 form-control', 'style' : 'width: 800px; height: 60px;', 'placeholder' : 'Observações importantes'})
+        self.fields['observacoes'].widget.attrs.update({'class' : 'col-md-8 form-control', 'style' : 'height: 60px;', 'placeholder' : 'Observações importantes'})
 
 class DoacaoEntradaForm(forms.ModelForm):
-    valor = forms.CharField(widget=forms.TextInput())
+    valor = forms.CharField(widget=forms.TextInput(), required = False)
     quantiaDoacao = forms.CharField(widget=forms.TextInput(), required = False)
     class Meta:
         model = DoacaoEntrada
-        fields = ('pessoa', 'valor', 'observacoes', 'produtoDoacao', 'quantiaDoacao')
-
+        fields = ('pessoa', 'valor', 'observacoes', 'quantiaDoacao', 'produtoDoacao')
     def __init__(self, *args, **kwargs):
         super(DoacaoEntradaForm, self).__init__(*args, **kwargs)
         self.fields['pessoa'].widget.attrs.update({'class':'custom-select', 'id':'inputGroupSelect01'})
         self.fields['produtoDoacao'].widget.attrs.update({'class':'col-8 custom-select', 'id':'inputGroupSelect01'})
-        self.fields['observacoes'].widget.attrs.update({'class' : 'col-sm-8 form-control', 'style' : 'width: 800px; height: 80px;', 'placeholder' : 'Observações sobre a doação'})
-        self.fields['valor'].widget.attrs.update({'class': 'form-control col-sm-2','placeholder' : 'Ex: 100.00'})
+        self.fields['observacoes'].widget.attrs.update({'class' : 'col-md-8 form-control', 'style' : 'height: 80px;', 'placeholder' : 'Observações sobre a doação'})
+        self.fields['valor'].widget.attrs.update({'class': 'form-control col text-center','placeholder' : 'Ex: 100.00'})
         self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center','placeholder' : 'Quantidade'})
+        self.fields["pessoa"].queryset = Pessoa.objects.filter(cadastro_ativo="Sim").order_by('nome')
+        self.fields["produtoDoacao"].queryset = ProdutoDoacao.objects.filter(cadastro_ativo="Sim").order_by('descricao')
 
 class DoacaoSaidaForm(forms.ModelForm):
-    valor = forms.CharField(widget=forms.TextInput())
+    valor = forms.CharField(widget=forms.TextInput(), required = False)
     quantiaDoacao = forms.CharField(widget=forms.TextInput(), required = False)
     class Meta:
         model = DoacaoSaida
         fields = ('pessoa', 'valor', 'observacoes',  'produtoDoacao', 'quantiaDoacao')
-
     def __init__(self, *args, **kwargs):
         super(DoacaoSaidaForm, self).__init__(*args, **kwargs)
         self.fields['pessoa'].widget.attrs.update({'class':'custom-select', 'id':'inputGroupSelect01'})
         self.fields['produtoDoacao'].widget.attrs.update({'class':'col-8 custom-select', 'id':'inputGroupSelect01'})
-        self.fields['observacoes'].widget.attrs.update({'class' : 'col-sm-8 form-control', 'style' : 'width: 800px; height: 80px;', 'placeholder' : 'Observações sobre a doação'})
-        self.fields['valor'].widget.attrs.update({'class': 'form-control col-sm-2','placeholder' : 'Ex: 100.00'})
+        self.fields['observacoes'].widget.attrs.update({'class' : 'col-md-8 form-control', 'style' : 'height: 80px;', 'placeholder' : 'Observações sobre a doação'})
+        self.fields['valor'].widget.attrs.update({'class': 'form-control col text-center','placeholder' : 'Ex: 100.00'})
         self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center','placeholder' : 'Quantidade'})
+        self.fields["pessoa"].queryset = Pessoa.objects.filter(cadastro_ativo="Sim").order_by('nome')
+        self.fields["produtoDoacao"].queryset = ProdutoDoacao.objects.filter(cadastro_ativo="Sim").order_by('descricao')
 
 class BuscaForm(forms.ModelForm):
     class Meta:
         model = Busca
-        fields = ('tipo_busca', 'texto_busca')
+        fields = ('tipo_busca', 'texto_busca', 'status_cadastro')
 
     def __init__(self, *args, **kwargs):
         super(BuscaForm, self).__init__(*args, **kwargs)
-        self.fields['tipo_busca'].widget.attrs.update({'class':'custom-select col', 'id':'inputGroupSelect01'})
+        self.fields['status_cadastro'].widget.attrs.update({'class':'custom-select col-2', 'id':'status_cadastro'})
+        self.fields['tipo_busca'].widget.attrs.update({'class':'custom-select col', 'id':'tipo_busca'})
         self.fields['texto_busca'].widget.attrs.update({'class' : 'col form-control', 'placeholder' : 'Ex: Maria Silva | Arrecadação na Praça etc'})

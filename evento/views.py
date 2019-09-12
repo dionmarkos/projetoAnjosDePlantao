@@ -43,3 +43,15 @@ def cadastrar_evento_detail(request, pk):
             formEvento = CadastrarEventoForm(instance=evento)
     formEvento = CadastrarEventoForm(instance=evento)
     return render(request, 'blog/cadastrar_evento.html', {'formEvento': formEvento, 'evento':evento})
+
+@login_required(login_url='/accounts/login/')
+def cadastrar_evento_inativacao(request, pk):
+    evento = get_object_or_404(Evento, pk=pk)
+    if evento.cadastro_ativo == "Sim":
+        evento.cadastro_ativo = "Não"
+        messages.success(request, 'Cadastro inativado com sucesso!', extra_tags='alert alert-success')
+    else:
+        evento.cadastro_ativo = "Sim"
+        messages.success(request, 'Cadastro ativado com sucesso!', extra_tags='alert alert-success')
+    evento.save()
+    return redirect('busca', pk=1)

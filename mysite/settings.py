@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anjosDePlantaoAmbiente',
-    'evento',
     'accounts.apps.AccountsConfig',
+    'widget_tweaks',
+    'evento',
 ]
 
 MIDDLEWARE = [

@@ -11,7 +11,7 @@ main {
 
 .my-custom-scrollbar {
 	position: relative;
-	height: 500px;
+	max-height: 500px;
 	overflow: auto;
 }
 .table-wrapper-scroll-y {
@@ -46,6 +46,11 @@ footer {
 	opacity: 0.4;
 }
 
+#my_form {
+ display: none;
+}
+
+/* BASE.HTML - NÃO LOGADO */
 #nao_logado {
 	color: white;
 	position: relative;
@@ -53,6 +58,11 @@ footer {
 	text-align: center;
 	vertical-align: middle;
 	font-size: 20px;
+}
+
+/* ACCOUNTS/SIGNUP */
+#ul_field_labels ul {
+	padding-left: 0px;
 }
 /*
 #apresentacao_usuario {

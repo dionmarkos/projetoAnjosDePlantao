@@ -13,3 +13,4 @@ class Evento(models.Model):
     estado = models.CharField(max_length=20)
     observacoes = models.TextField(blank=True)
     dataDeCadastro = models.DateTimeField(blank=True)
+    cadastro_ativo = models.CharField(default="Sim", max_length=3, blank=True)

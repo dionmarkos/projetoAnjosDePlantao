@@ -18,8 +18,8 @@
 			{% endif %}
 
 			<div class="form-group p-0">
-				<div class="form-group row justify-content-between m-0">
-					<a href="../../../doacao_entrada/" class="btn btn-primary col-3">Nova Doação</a>
+				<div class="form-group row m-0">
+					<a href="../../../doacao_entrada/" class="btn btn-outline-primary col-auto">Nova Doação</a>
 				</div>
 		  </div>
 
@@ -30,25 +30,81 @@
 	  		{{ formDoacaoEntrada.pessoa }}
 			</div>
 
-			<div class="form-group pt-3">
-		    <label for="valor">Valor Doado R$</label>
-				<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os centavos)</small>
-				<div id="valor">
+			<div class="form-group">
+		    <label for="valor">Valor</label>
+				<div class="form-row">
+
+
+				<div class="input-group-prepend">
+					<label class="input-group-text" for="inputGroupSelect01">R$</label>
+				</div>
+				<div class="col-4 col-sm-2 p-0" id="valor">
 					{{ formDoacaoEntrada.valor }}
+				</div>
+				<a href="#" class="ml-1" data-container="body" data-toggle="popover" data-placement="top" data-html="true"
+				data-content="- Utilize ponto ao invés de vírgula para separar os decimais.<br>
+				- Caso não houver valor a ser doado, insira '0'.">
+				<i class="material-icons text-dark" style="line-height: unset !important;">help_outline</i>
+				</a>
 				</div>
 		  </div>
 
 			<div class="form-row">
 				<div class="">
-					<label for="outrasDoacoes">Outras Doações</label>
-					<small>(Caso não utilizar, inserir "0" | Use ponto ao invés de vírgula para separar os decimais)</small>
+					<label for="outrasDoacoes">Produtos</label>
 				</div>
-				<div id="outrasDoacoes" class="input-group mb-3">
-	  			<div class="input-group-prepend">
-	    			<label class="input-group-text" for="inputGroupSelect01">Produto</label>
-	  			</div>
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<i class="material-icons align-middle input-group-text">add_circle</i>
+					</div>
+					<div class="input-group-prepend">
+						<label class="input-group-text" for="inputGroupSelect01">Inserir produto</label>
+					</div>
 					{{ formDoacaoEntrada.quantiaDoacao }}
-		  		{{ formDoacaoEntrada.produtoDoacao }}
+					{{ formDoacaoEntrada.produtoDoacao }}
+					<a href="#" class="ml-1" data-container="body" data-toggle="popover" data-placement="left" data-html="true"
+					data-content="- Clique em 'Salvar' para adicionar o produto.<br>
+					- Para salvar sem nenhum produto, digite a quantidade '0' e deixe o produto em '---------'.<br>
+					- Ao excluir um produto da doação, o estoque será revertido para o estado anterior a inserção do produto.">
+						<i class="material-icons text-dark" style="line-height: unset !important;">help_outline</i>
+					</a>
+				</div>
+			</div>
+
+			{% if produtosDoacao %}
+			<div class="row table-wrapper-scroll-y my-custom-scrollbar justify-content-center">
+				<div class="col-md-8">
+					<table class="table table-striped table-hover bg-silver">
+						<thead class="thead-dark">
+							<legend class="bg-dark text-center text-light position-relative">Produtos adicionados</legend>
+							<tr class="text-center">
+								<th class="align-middle" scope="col">Nº</th>
+								<th class="align-middle" scope="col">Quantidade</th>
+								<th class="align-middle" scope="col">Produto</th>
+								<th class="align-middle" scope="col">Ação</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for produtoDoacao in produtosDoacao %}
+							<tr class="text-center">
+								<td class="align-middle">{{forloop.counter}}</td>
+								<td class="align-middle">{{produtoDoacao.quantidade}}</td>
+								<td class="align-middle">{{produtoDoacao.produto.descricao}}</td>
+								<td class="align-middle">
+									<a class="btn bg-white col-auto text-dark ml-1" href={% url 'doacao_entrada_delete_produto' pk=produtoDoacao.pk %} onclick="window.confirmaExclusao()"><i class="material-icons align-bottom text-danger">delete_forever</i> Excluir</a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			{% endif %}
+
+			<div class="form-group">
+		    <label for="observacoes">Observações</label>
+				<div id="observacoes">
+					{{ formDoacaoEntrada.observacoes }}
 				</div>
 		  </div>
 
@@ -71,15 +127,21 @@
 				</div>
 			</div>
 
-			<div class="form-group">
-		    <label for="observacoes">Observações</label>
-				<div id="observacoes">
-					{{ formDoacaoEntrada.observacoes }}
-				</div>
-		  </div>
 			<div class="form-group row justify-content-between m-0">
-				<button type="reset" class="btn btn-light col-3">Limpar Dados</button>
-				<button type="submit" class="btn btn-primary col-3">Salvar</button>
+				<button type="reset" class="btn btn-outline-light col-auto">Limpar Dados</button>
+				<button type="submit" class="btn btn-outline-primary col-auto">Salvar</button>
 			</div>
 		</form>
+
+		<script type="text/javascript">
+		window.confirmaExclusao = function() {
+			var isValid = confirm('Tem certeza que deseja realizar a exclusão?');
+			if (!isValid) {
+				event.preventDefault();
+			}
+		}
+		$(function () {
+  		$('[data-toggle="popover"]').popover()
+		})
+		</script>
 {% endblock %}
