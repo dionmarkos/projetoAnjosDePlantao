@@ -18,16 +18,12 @@
 		<main>
 			{% if user.is_authenticated %}
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<a class="navbar-brand" href="/">Anjos de Plantão</a>
+				<a class="navbar-brand mr-0 p-2" href="/"><i class="material-icons align-text-bottom">home</i> Anjos de Plantão</a>
   			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
     			<span class="navbar-toggler-icon"></span>
   			</button>
 				<div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
 					<ul class="navbar-nav mr-auto">
-						<!-- INICIO -->
-						<li class="nav-item active">
-							<a class="nav-link" href="/"><i class="material-icons align-bottom">home</i> Início <span class="sr-only">(página atual)</span></a>
-						</li>
 						<!-- CADASTRO -->
 						<li class="nav-item dropdown active">
 			        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,7 +32,7 @@
 			          <a class="dropdown-item" href="../../../cadastrar_pessoa/"><i class="material-icons align-bottom">person_add</i> Pessoa </a>
 			          <a class="dropdown-item" href="../../../cadastrar_evento/"><i class="material-icons align-bottom">event_note</i> Evento </a>
 								<a class="dropdown-item" href="../../../cadastrar_produto/"><i class="material-icons align-bottom">local_grocery_store</i> Produto </a>
-								{% if request.user.is_superuser %}
+								{% if request.user.username == "lucrecia" or request.user.username == "admin" %}
 								<a class="dropdown-item" href="../../../accounts/signup/"><i class="material-icons align-bottom">supervisor_account</i> Usuário </a>
 								{% endif %}
 							</div>
@@ -62,10 +58,7 @@
 						<li class="nav-item active">
 							<a class="nav-link" href="{% url 'busca' pk=1 %}"><i class="material-icons align-bottom">search</i> Consultas </a>
 						</li>
-						<!-- SAIR -->
-						<li class="nav-item active">
-							<a class="nav-link" href="../../../accounts/logout/"><i class="material-icons align-bottom">exit_to_app</i> Sair do Sistema </a>
-						<!-- APRESENTAÇÃO -->
+						<!-- USUÁRIO -->
 						<li class="nav-item dropdown active">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="material-icons align-bottom">account_circle</i> {{ user.username }} </a>
@@ -73,15 +66,18 @@
 			          <a class="dropdown-item" href="../../../accounts/password_change/"><i class="material-icons align-bottom">vpn_key</i> Alterar Senha </a>
 							</div>
 						</li>
+						<!-- SAIR -->
+						<li class="nav-item active">
+							<a class="nav-link" href="../../../accounts/logout/"><i class="material-icons align-bottom">exit_to_app</i> Sair do Sistema </a>
+						</li>
 					</ul>
 				</div>
 			</nav>
 
-			<div class="container col-auto m-4 p-4">
+			<div class="container col-auto m-4 p-4 bg-light">
 				{% block formularios %}
 				{% endblock %}
     	</div>
-
 
 			{% else %}
 			<div id="nao_logado">

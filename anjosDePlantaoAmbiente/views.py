@@ -144,16 +144,14 @@ def caixa_geral(request):
         if request.method == "POST":
             formCaixaGeral = CaixaGeralForm(request.POST)
             if formCaixaGeral.is_valid():
-                # verifica se o objeto único do caixa geral já existe.
-                # usei o try except porque o except só será usado uma vez,
-                # só será usado quando o objeto não existir, ou seja, quando for utilizado pela primeira vez
-                try:
+                # verifica se o objeto único do caixa geral já existe
+                if len(CaixaGeral.objects.all()) > 0:
                     operacao = CaixaGeral.objects.all()[0]
                     operacao.observacoes = formCaixaGeral['observacoes'].value()
                     operacao.autor = request.user
                     operacao.dataDeCadastro = timezone.now()
                     operacao.save()
-                except:
+                else:
                     operacao = formCaixaGeral.save(commit=False)
                     operacao.autor = request.user
                     operacao.dataDeCadastro = timezone.now()
@@ -164,8 +162,12 @@ def caixa_geral(request):
                 formCaixaGeral = CaixaGeralForm(instance=CaixaGeral.objects.all()[0])
                 return render(request, 'blog/caixa_geral.html', {'formCaixaGeral': formCaixaGeral})
         else:
-            formCaixaGeral = CaixaGeralForm(instance=CaixaGeral.objects.all()[0])
-        operacao = CaixaGeral.objects.all()[0]
+            # verifica se o objeto único do caixa geral já existe
+            if len(CaixaGeral.objects.all()) > 0:
+                formCaixaGeral = CaixaGeralForm(instance=CaixaGeral.objects.all()[0])
+                operacao = CaixaGeral.objects.all()[0]
+            else:
+                formCaixaGeral = CaixaGeralForm()
         # lista das últimas doações realizadas ou recebidas, tendo no máximo 14 resultados
         # deve ser 7 recebidas e 7 realizadas
         # como devem ser 14 resultados, 7 de cada, precisa ver antes se existe esses 7 objetos

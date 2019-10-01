@@ -52,7 +52,7 @@ class DoacaoEntradaForm(forms.ModelForm):
         self.fields['produtoDoacao'].widget.attrs.update({'class':'col-8 custom-select', 'id':'inputGroupSelect01'})
         self.fields['observacoes'].widget.attrs.update({'class' : 'col-md-8 form-control', 'style' : 'height: 80px;', 'placeholder' : 'Observações sobre a doação'})
         self.fields['valor'].widget.attrs.update({'class': 'form-control col text-center','placeholder' : 'Ex: 100.00'})
-        self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center','placeholder' : 'Quantidade'})
+        self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center w-auto','placeholder' : 'Quantidade'})
         self.fields["pessoa"].queryset = Pessoa.objects.filter(cadastro_ativo="Sim").order_by('nome')
         self.fields["produtoDoacao"].queryset = ProdutoDoacao.objects.filter(cadastro_ativo="Sim").order_by('descricao')
 
@@ -68,7 +68,7 @@ class DoacaoSaidaForm(forms.ModelForm):
         self.fields['produtoDoacao'].widget.attrs.update({'class':'col-8 custom-select', 'id':'inputGroupSelect01'})
         self.fields['observacoes'].widget.attrs.update({'class' : 'col-md-8 form-control', 'style' : 'height: 80px;', 'placeholder' : 'Observações sobre a doação'})
         self.fields['valor'].widget.attrs.update({'class': 'form-control col text-center','placeholder' : 'Ex: 100.00'})
-        self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center','placeholder' : 'Quantidade'})
+        self.fields['quantiaDoacao'].widget.attrs.update({'class': 'form-control col-2 text-center w-auto','placeholder' : 'Quantidade'})
         self.fields["pessoa"].queryset = Pessoa.objects.filter(cadastro_ativo="Sim").order_by('nome')
         self.fields["produtoDoacao"].queryset = ProdutoDoacao.objects.filter(cadastro_ativo="Sim").order_by('descricao')
 
@@ -81,4 +81,4 @@ class BuscaForm(forms.ModelForm):
         super(BuscaForm, self).__init__(*args, **kwargs)
         self.fields['status_cadastro'].widget.attrs.update({'class':'custom-select col-2', 'id':'status_cadastro'})
         self.fields['tipo_busca'].widget.attrs.update({'class':'custom-select col', 'id':'tipo_busca'})
-        self.fields['texto_busca'].widget.attrs.update({'class' : 'col form-control', 'placeholder' : 'Ex: Maria Silva | Arrecadação na Praça etc'})
+        self.fields['texto_busca'].widget.attrs.update({'class' : 'col form-control w-auto', 'placeholder' : 'Ex: Maria Silva | Arrecadação na Praça etc'})

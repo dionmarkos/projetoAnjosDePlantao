@@ -97,7 +97,7 @@ class CaixaGeral(models.Model):
     autor = models.ForeignKey('auth.User', on_delete=models.DO_NOTHING)
     observacoes = models.TextField(null=True, blank=True)
     dataDeCadastro = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    saldo = models.DecimalField(max_digits=11, decimal_places=2, blank=True)
+    saldo = models.DecimalField(max_digits=11, decimal_places=2, blank=True, default=0.00)
 
     def entrada_saldo(self, valor):
         self.saldo += valor
