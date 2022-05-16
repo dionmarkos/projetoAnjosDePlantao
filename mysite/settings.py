@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'anjosDePlantaoAmbiente',
     'accounts.apps.AccountsConfig',
     'widget_tweaks',
-    'django-money',
     'evento',
 ]
 
